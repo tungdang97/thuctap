@@ -1,4 +1,4 @@
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
 <div class="col-md-6 col-md-offset-3">
 	<div class="panel panel-primary">
 	    <div class="panel-body">
@@ -22,7 +22,13 @@
 				<input type="text" class="form-control" name="full_name" placeholder="Nhập tên đầy đủ của bạn...">
 			</div>
 
+			<div class="form-group">
+				<label >Avatar</label>
+				<input type="file" class="form-control" name="avatar_image">
+			</div>
+			
 			<button type="submit" class="btn btn-default" name="dangky">Đăng ký</button>
+			
 	    </div>
 	</div>
 </div>
