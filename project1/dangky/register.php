@@ -12,9 +12,9 @@
   
 Username: <input type="text" name="username" value="" required>
   
-Password: <input type="password" name="pass1" value="" required/>
+Password: <input type="" name="pass1" value="" required/>
 
-Confirm Password: <input type="password" name="pass2" value="" required/>
+Confirm Password: <input type="" name="pass2" value="" required/>
   
 Email: <input type="email" name="email" value="" required/>
   

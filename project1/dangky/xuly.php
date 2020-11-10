@@ -37,10 +37,10 @@ if (isset($_POST['dangky'])) {
         header("location:register.php?page=register");
         setcookie("error", "Đăng ký không thành công!", time() + 1, "/", "", 0);
     } else {
-        $pass = md5($pass1);
+        //$pass = md5($pass1);
         mysqli_query($connect, "
             insert into member (username, password, email, phone, birthday, sex, avatarname)
-            values ('$username','$pass','$email','$phone', '$birthday', '$sex', '$fileName')	
+            values ('$username','$pass1','$email','$phone', '$birthday', '$sex', '$fileName')	
         ");
         header("location:register.php?page=register");
         setcookie("success", "Đăng ký thành công!", time() + 1, "/", "", 0);

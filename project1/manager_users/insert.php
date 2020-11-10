@@ -1,84 +1,90 @@
 <?php  
- $connect = mysqli_connect("localhost", "root", "", "data");  
+ $connect = mysqli_connect("localhost", "root", "", "data");
+ 
  if(!empty($_POST))  
  {  
-      $output = '';  
-      $message = '';  
-      $username = $_POST['username'];
-    $pass1 = $_POST['pass1'];
-    $pass2 = $_POST['pass2'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $birthday = $_POST['birthday'];
-    $sex = $_POST['sex'];
-    $file = $_FILES['avatarname'];
-    $allowType = ['image/png', 'image/jpeg', 'image/gif'];
-    $fileName = $file['name'];
-    
-    if ($pass1 == $pass2 && in_array($file['type'], $allowType)) {
-     $pass = md5($pass1);
-     if($_POST["user_id"] != '')  
-     {    
-          $query = "  
-          UPDATE member   
-          SET username='$username',   
-          email='$email',   
-          phone='$phone',   
-          birthday = '$birthday',   
-          sex = '$sex'
-          avatarname = '$fileName';
-          password = '$pass';
-          WHERE id='".$_POST["user_id"]."'";
-          $message = 'Data Updated';
-         
-    //  else {
-    //      $query = "  
-    //      UPDATE member   
-    //      SET username='$username',   
-    //      email='$email',   
-    //      phone='$phone',   
-    //      birthday = '$birthday',   
-    //      sex = '$sex'
-    //      avatarname = ;
-    //      WHERE id='".$_POST["user_id"]."'";
-    //      $message = 'Data Updated';
-    //  }    
-     }  
-     else  
-     {  
-          $query = "  
-          INSERT INTO member (username, email, phone, birthday, sex, avatarname, password)  
-          VALUES('$username', '$email', '$phone', '$birthday', '$sex', '$pass');  
-          ";  
-          $message = 'Data Inserted';  
+     $output = '';  
+     $message = '';  
+     $username = $_POST['username'];
+     $email = $_POST['email'];
+     $birthday = $_POST['birthday'];
+     $sex = $_POST['sex'];
+     
+     // $new_file = $_FILES['new_avatar'];
+     // $new_avatar_name = $new_file['name'];
+     // $allowType = ['image/png', 'image/jpeg', 'image/gif'];
+
+    $result = mysqli_query($connect, "select * from member");
+    $row = mysqli_fetch_assoc($result);
+     //Lấy dữ liệu nhập vào
+     $password1 = addslashes($_POST['password1']);
+     $password2 = addslashes($_POST['password2']);
+     $new_pw1 = addslashes($_POST['new_pw1']);
+     $new_pw2 = addslashes($_POST['new_pw2']);
+     if($_POST["user_id"] != '') {
+          
+          //if($new_avatar_name != "") {
+               // if ($new_pw1 != $new_pw2 || !in_array($new_file['type'], $allowType)) {
+               if ($new_pw1 != $new_pw2) {
+                    header("location:register.php?page=register");
+                    setcookie("error", "Nhập sai Password hoặc sai file ảnh!", time() + 1, "/", "", 0);
+               } else {
+                    // move_uploaded_file($new_file['tmp_name'], 'img/' . $new_avatar_name);
+                    // $path_image = "img/" . $row['avatarname'];
+                    // unlink($path_image);
+                    $query = "
+                    UPDATE member
+                    SET username='$username', email = '$email', birthday='$birthday', sex = '$sex', password = '$new_pw1'
+                    WHERE id=".$_POST["user_id"]; 
+                    $message = 'Data Updated';
+                    // echo "111".$query;
+               }
+          } else {
+               $query = "
+                    UPDATE member
+                    SET username='$username', email = '$email', birthday='$birthday', sex = '$sex', password = '$new_pw1'
+                    WHERE id=".$_POST["user_id"]; 
+                    $message = 'Data Updated';
+                    mysqli_query($connect, $query);
+          }
+          echo "abc";
+          // WHERE id='".$id."'";
+
+     //} else {
+          //if($new_avatar_name != "") { 
+               // if ($password1 == "" || $password1 != $password2 || !in_array($new_file['type'], $allowType))
+               if ($password1 == "" || $password1 != $password2)
+                    echo $output = "Nhập sai Password hoặc sai file ảnh!";
+               else {
+                   // move_uploaded_file($new_file['tmp_name'], 'img/' . $new_avatar_name);
+                    $query = "
+                    INSERT INTO member(username, email, birthday, sex, password )  
+                    VALUES('$username', '$email', '$birthday', '$sex', '$password1');  
+                    ";
+                    $message = 'Data Inserted';
+                    mysqli_query($connect, $query);
+               }
+          } else {
+               $query = "
+               INSERT INTO member(username, email, birthday, sex, password)  
+               VALUES('$username', '$email', '$birthday', '$sex', '$password1');  
+               ";
+          //}
+          
+
+
+     echo "123";
      }
-     if(mysqli_query($connect, $query))  
-     {  
-          $output .= '<label class="text-success">' . $message . '</label>';  
-          $select_query = "SELECT * FROM member  ORDER BY id DESC";  
-          $result = mysqli_query($connect, $select_query);  
-          $output .= '  
-               <table class="table table-bordered">  
-                    <tr>  
-                         <th width="70%">Employee Name</th>  
-                         <th width="15%">Edit</th>  
-                         <th width="15%">View</th>  
-                    </tr>  
-          ';  
-          while($row = mysqli_fetch_array($result))  
-          {  
-               $output .= '  
-                    <tr>  
-                         <td>' . $row["name"] . '</td>  
-                         <td><input type="button" name="edit" value="Edit" id="'.$row["id"] .'" class="btn btn-info btn-xs edit_data" /></td>  
-                         <td><input type="button" name="view" value="view" id="' . $row["id"] . '" class="btn btn-info btn-xs view_data" /></td>  
-                    </tr>  
-               ';  
-          }  
-          $output .= '</table>';  
-     }  
-     echo $output;  
-}  
-    }
+     
+     
+    // mysqli_query($connect, $query);
+// mã hóa pasword
+//$password = md5($password);
+// /echo $output;    
+//}
+
+     
+
+    
       
  ?>

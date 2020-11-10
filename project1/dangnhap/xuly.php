@@ -20,9 +20,9 @@ exit;
 }
   
 // mã hóa pasword
-$password = md5($password);
+//$password = md5($password);
   
-//Kiểm tra tên đăng nhập có tồn tại không
+//Kiểm tra tên đăng nhập và password có tồn tại không
 $query = mysqli_query($connect, "SELECT * FROM member WHERE username='$username' and password = '$password'");
 $count_row = mysqli_num_rows($query);
 
